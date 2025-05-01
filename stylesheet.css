@@ -1,24 +1,44 @@
 .accenty-popup {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(35, 35, 35, 0.91);
   border-radius: 2px;
   padding: 8px;
   spacing: 6px;
+  transition: all 250ms cubic-bezier(0.1, 1, 0.3, 1);
+  transition-origin: center;
+  box-shadow: 0 4px 8px rgba(35, 35, 35, 0.2);
 }
 
 .accenty-button {
-  font-size: 24px;
-  background-color: rgba(60, 60, 60, 0.5);
+  font-size: 28px;
+  background-color: rgba(35, 35, 35, 0.5);
   border-radius: 4px;
   padding: 12px 16px;
   color: white;
-  transition-duration: 200ms;
+  transition: all 200ms cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  transition-origin: center;
 }
 
 .accenty-button:hover,
 .accenty-button:focus {
-  background-color: rgba(70, 130, 180, 0.8);
+  background-color: rgba(237, 253, 255, 0.57);
+  color: rgb(35, 35, 35);
+  transform: translateY(-2px);
 }
 
 .accenty-button-selected {
-  background-color: rgb(70, 130, 180);
+  background-color: rgb(249, 175, 110);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.accenty-button:hover,
+.accenty-button:focus,
+.accenty-button-selected {
+  cursor: pointer;
+  color: rgb(35, 35, 35);
+}
+
+.accenty-button:active {
+  transform: translateY(1px);
+  transition: all 100ms cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }

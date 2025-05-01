@@ -109,7 +109,12 @@ export default class AccentyExtension extends Extension {
   }
 
   _showBaseCharPrompt() {
-    this._destroyPopup();
+    if (this._accentPopup) {
+      this._accentPopup.destroy();
+      this._accentPopup = null;
+      this._accentButtons = [];
+    }
+
     this._accentPopup = new St.BoxLayout({
       style_class: "accenty-popup",
       vertical: false,
@@ -117,17 +122,33 @@ export default class AccentyExtension extends Extension {
       x_align: Clutter.ActorAlign.CENTER,
       y_align: Clutter.ActorAlign.CENTER,
     });
+
     let label = new St.Label({
       text: "Type a letter for accents...",
       style: "font-size: 20px; color: white; padding: 12px;",
     });
+
     this._accentPopup.add_child(label);
     Main.uiGroup.add_child(this._accentPopup);
+
     let monitor = Main.layoutManager.primaryMonitor;
     this._accentPopup.set_position(
       Math.floor(monitor.x + (monitor.width - this._accentPopup.width) / 2),
       Math.floor(monitor.y + (monitor.height - this._accentPopup.height) / 2)
     );
+
+    // Add animation for a smoother appearance
+    this._accentPopup.opacity = 0;
+    this._accentPopup.scale_x = 0.8;
+    this._accentPopup.scale_y = 0.8;
+    this._accentPopup.ease({
+      opacity: 255,
+      scale_x: 1.0,
+      scale_y: 1.0,
+      duration: 200,
+      mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+    });
+
     // Focus the label for accessibility
     label.grab_key_focus();
   }
@@ -154,9 +175,16 @@ export default class AccentyExtension extends Extension {
   }
 
   _showAccentPopup(key) {
-    this._destroyPopup();
+    // Don't destroy the existing popup immediately to avoid flicker
+    if (this._accentPopup) {
+      this._accentPopup.destroy();
+      this._accentPopup = null;
+      this._accentButtons = [];
+    }
+
     const accents = ACCENT_MAP[key];
     if (!accents || accents.length === 0) return;
+
     this._accentPopup = new St.BoxLayout({
       style_class: "accenty-popup",
       vertical: false,
@@ -164,18 +192,33 @@ export default class AccentyExtension extends Extension {
       x_align: Clutter.ActorAlign.CENTER,
       y_align: Clutter.ActorAlign.CENTER,
     });
+
     this._accentButtons = [];
     this._selectedIndex = 0;
     this._addAccentButton(key, 0);
     accents.forEach((accent, index) => {
       this._addAccentButton(accent, index + 1);
     });
+
     Main.uiGroup.add_child(this._accentPopup);
     let monitor = Main.layoutManager.primaryMonitor;
     this._accentPopup.set_position(
       Math.floor(monitor.x + (monitor.width - this._accentPopup.width) / 2),
       Math.floor(monitor.y + (monitor.height - this._accentPopup.height) / 2)
     );
+
+    // Add animation for a smoother appearance
+    this._accentPopup.opacity = 0;
+    this._accentPopup.scale_x = 0.8;
+    this._accentPopup.scale_y = 0.8;
+    this._accentPopup.ease({
+      opacity: 255,
+      scale_x: 1.0,
+      scale_y: 1.0,
+      duration: 200,
+      mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+    });
+
     this._highlightButton(0);
     // Focus the first button for keyboard navigation
     if (this._accentButtons.length > 0) {
@@ -228,8 +271,6 @@ export default class AccentyExtension extends Extension {
     let button = new St.Button({
       label: character,
       style_class: "accenty-button",
-      style:
-        "font-size: 24px; background-color: rgba(60, 60, 60, 0.5); border-radius: 4px; padding: 12px 16px; color: white;",
       reactive: true,
       can_focus: true,
     });
@@ -245,11 +286,9 @@ export default class AccentyExtension extends Extension {
   _highlightButton(index) {
     this._accentButtons.forEach((btn, i) => {
       if (i === index) {
-        btn.style =
-          "font-size: 24px; background-color: rgb(70, 130, 180); border-radius: 4px; padding: 12px 16px; color: white;";
+        btn.add_style_class_name("accenty-button-selected");
       } else {
-        btn.style =
-          "font-size: 24px; background-color: rgba(60, 60, 60, 0.5); border-radius: 4px; padding: 12px 16px; color: white;";
+        btn.remove_style_class_name("accenty-button-selected");
       }
     });
 
@@ -273,9 +312,21 @@ export default class AccentyExtension extends Extension {
 
   _destroyPopup() {
     if (this._accentPopup) {
-      this._accentPopup.destroy();
-      this._accentPopup = null;
-      this._accentButtons = [];
+      // Add animation when closing popup
+      this._accentPopup.ease({
+        opacity: 0,
+        scale_x: 0.8,
+        scale_y: 0.8,
+        duration: 150,
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        onComplete: () => {
+          if (this._accentPopup) {
+            this._accentPopup.destroy();
+            this._accentPopup = null;
+            this._accentButtons = [];
+          }
+        },
+      });
     }
   }
 }

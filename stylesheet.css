@@ -1,0 +1,24 @@
+.accenty-popup {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 2px;
+  padding: 8px;
+  spacing: 6px;
+}
+
+.accenty-button {
+  font-size: 24px;
+  background-color: rgba(60, 60, 60, 0.5);
+  border-radius: 4px;
+  padding: 12px 16px;
+  color: white;
+  transition-duration: 200ms;
+}
+
+.accenty-button:hover,
+.accenty-button:focus {
+  background-color: rgba(70, 130, 180, 0.8);
+}
+
+.accenty-button-selected {
+  background-color: rgb(70, 130, 180);
+}

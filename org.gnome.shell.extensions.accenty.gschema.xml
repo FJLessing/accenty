@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema id="org.gnome.shell.extensions.accenty" path="/org/gnome/shell/extensions/accenty/">
+        <key name="show-accenty-popup" type="as">
+            <default>['&lt;Super&gt;equal']</default>
+            <summary>Show Accenty popup</summary>
+            <description>Keybinding to show the Accenty accent menu popup. Example:
+                &lt;Super&gt;equal for
+                Super+=</description>
+        </key>
+    </schema>
+</schemalist>

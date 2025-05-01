@@ -1,0 +1,7 @@
+{
+  "name": "Accenty",
+  "description": "Accent menu for GNOME Shell: copy accented characters to the clipboard in the style of the Mac Accent menu.",
+  "uuid": "accenty@fjlessing.co.za",
+  "shell-version": ["48"],
+  "url": "https://fjlessing.co.za/accenty"
+}
